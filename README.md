@@ -167,7 +167,4 @@ Copies `best-int8.tflite` → `build_acap/`.
 * **Axis ACAP Native SDK** – [https://github.com/AxisCommunications/acap-native-sdk-examples](https://github.com/AxisCommunications/acap-native-sdk-examples)
 * Automation scripts by Gustav Rånby
 
-```
 
-Copy-paste this over your existing `README.md` and you’re in sync with the latest scripts.
-```
