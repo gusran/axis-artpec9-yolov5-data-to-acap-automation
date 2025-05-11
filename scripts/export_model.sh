@@ -1,26 +1,50 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/_env.sh"
-cd "${ROOT_DIR}/yolov5"
+set -euo pipefail
 
-# locate latest exp
-LATEST_EXP=$(ls -1d runs/train/axis-train* | sort -V | tail -n1)
-BEST_PT="${LATEST_EXP}/weights/best.pt"
-[ -f "${BEST_PT}" ] || { echo "❌ best.pt not found"; exit 1; }
+# defaults
+DEVICE="cpu"
+INCLUDE="tflite"
+INT8=1
 
-log "▶ Creating/activating export venv…"
-[ -d "${EXPORT_VENV}" ] || ${PYTHON} -m venv "${EXPORT_VENV}"
-source "${EXPORT_VENV}/bin/activate"
-pip install -qr requirements.txt
-pip install coremltools onnx onnxruntime tensorflow
+usage() {
+cat <<EOF
+Usage: $0 [options]
 
-log "▶ Exporting TFLite INT8…"
-${PYTHON} export.py \
-  --weights "${BEST_PT}" \
-  --include tflite \
-  --int8 \
-  --device mps
+Options:
+  -w, --weights FILE      Explicit .pt weights (default: auto-pick last run/best.pt)
+  -d, --device DEV        Torch device (cpu, mps, 0…)  (default: ${DEVICE})
+  -i, --include LIST      Formats to export (comma-separated, default: ${INCLUDE})
+  -h, --help              Show help
+EOF
+}
 
-# copy artefacts next to Dockerfile
-mkdir -p "${ROOT_DIR}/build_acap"
-cp "${BEST_PT%.pt}-int8.tflite" "${ROOT_DIR}/build_acap/best-int8.tflite"
+WEIGHTS=""
 
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -w|--weights) WEIGHTS="$2"; shift 2 ;;
+        -d|--device)  DEVICE="$2";  shift 2 ;;
+        -i|--include) INCLUDE="$2"; shift 2 ;;
+        -h|--help) usage; exit 0 ;;
+        *) echo "Unknown option $1"; usage; exit 1 ;;
+    esac
+done
+
+# auto-discover last run
+if [[ -z "${WEIGHTS}" ]]; then
+    LAST_RUN=$(ls -td yolov5/runs/train/exp* | head -n1)
+    WEIGHTS="${LAST_RUN}/weights/best.pt"
+fi
+
+python3 -m venv .venv_export
+source .venv_export/bin/activate
+pip install --upgrade pip
+pip install -r yolov5/requirements.txt
+pip install coremltools onnx onnx-simplifier tensorflow-macos tensorflowjs # minimal extras
+
+cd yolov5
+python export.py \
+    --weights "${WEIGHTS}" \
+    --include "${INCLUDE}" \
+    --int8 ${INT8} \
+    --device "${DEVICE}"
