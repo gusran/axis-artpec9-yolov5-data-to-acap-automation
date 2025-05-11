@@ -1,8 +1,3 @@
-Below is an updated **README.md** that matches the behaviour of the *current* scripts you just uploaded ( `clone_deps.sh`, `train_model.sh`, `export_model.sh`, `build_acap.sh`, `run_all.sh` ) and the new “copy-app” logic.
-
----
-
-````markdown
 # Automated ACAP Build Pipeline 🚦
 
 End-to-end automation that turns **raw data → trained YOLOv5 model → INT-8 TFLite → Axis ACAP package** with **one command**.  
