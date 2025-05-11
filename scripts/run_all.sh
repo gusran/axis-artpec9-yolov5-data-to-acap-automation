@@ -53,9 +53,10 @@ if [[ ! -f "${MODEL_TFLITE}" ]]; then
 fi
 
 MODEL_TFLITE_FP="$(realpath "$MODEL_TFLITE")"
+DATA_YAML_FP="$(realpath "yolov5/data/$DATA_YAML")"
 
 # ---------- 3) Build ACAP -----------------------------------
 scripts/build_acap.sh \
     -m "${MODEL_TFLITE_FP}" \
-    -y "${DATA_YAML}" \
+    -y "${DATA_YAML_FP}" \
     -c "${CHIP}"
