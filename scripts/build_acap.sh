@@ -45,11 +45,16 @@ done
 [[ "${CHIP}" =~ ^(artpec8|artpec9|cpu)$ ]] || {
   echo "❌ --chip must be artpec8 | artpec9 | cpu"; usage 1; }
 
+cp -R acap-native-sdk-examples/object-detection-yolov5/app  build_acap
+
 # ---------- 1. labels ---------
 echo "🛈 Extracting labels → build_acap/labels.txt"
 source .venv_export/bin/activate
 python build_acap/extract_labels.py "${DATA_YAML}" build_acap/labels.txt
-python
+
+echo "🛈 Producing header file"
+python build_acap/app/parameter_finder.py "${MODEL_TFLITE}"
+mv model_params.h  build_acap/model_params.h
 
 # ---------- 2. model ----------
 echo "🛈 Copying model → build_acap/best-int8.tflite"
