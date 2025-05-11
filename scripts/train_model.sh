@@ -39,7 +39,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # ---------- env & deps ----------
-python3 -m venv .venv_train
+virtualenv -p python3.11 .venv_train
 source .venv_train/bin/activate
 pip install --upgrade pip
 pip install -r yolov5/requirements.txt

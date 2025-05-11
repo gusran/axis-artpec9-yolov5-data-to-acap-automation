@@ -47,7 +47,9 @@ done
 
 # ---------- 1. labels ---------
 echo "🛈 Extracting labels → build_acap/labels.txt"
+source .venv_export/bin/activate
 python build_acap/extract_labels.py "${DATA_YAML}" build_acap/labels.txt
+python
 
 # ---------- 2. model ----------
 echo "🛈 Copying model → build_acap/best-int8.tflite"

@@ -1,4 +1,4 @@
 .idea
-yolov5
 .venv_train
 .venv_export
+/yolov5/
