@@ -48,8 +48,8 @@ chmod +x scripts/*.sh          # first time only
 # 1️⃣ train → 2️⃣ export → 3️⃣ build ACAP — default coco128 + yolov5n
 ./scripts/run_all.sh
 
-# Custom dataset / model / chip:
-./scripts/run_all.sh my_data.yaml yolov5s.yaml artpec8
+# Custom dataset / model / epocs / batches:
+./scripts/run_all.sh coco128.yaml yolov5n.yaml 300 128
 ```
 
 The final ACAP package (`object_detection_coco_granby_*.eap`) will appear in `build_acap/build/`.
