@@ -66,6 +66,7 @@ cp     "$SRC_DIR/build.sh"    "$WORKDIR/"
 
 # overwrite DetectX' interactive script with our cli-friendly one
 cp detectx/prepare.py         "$WORKDIR/prepare.py"
+cp detectx/index.html         "$WORKDIR/app/html/index.html"
 
 # ---------- 2. extract labels ---------------------------------------
 echo "🛈 Extracting labels …"

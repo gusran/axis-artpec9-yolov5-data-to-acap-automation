@@ -20,8 +20,8 @@ from pathlib import Path
 CHIP_MAP = {
     "artpec8": "axis-a8-dlpu-tflite",
     "a8":      "axis-a8-dlpu-tflite",
-    "artpec9": "axis-a9-dlpu-tflite",
-    "a9":      "axis-a9-dlpu-tflite",
+    "artpec9": "a9-dlpu-tflite",
+    "a9":      "a9-dlpu-tflite",
     "tpu":     "google-edge-tpu-tflite",
 }
 
@@ -30,6 +30,7 @@ VIDEO_DIM = {          # width , height
     640: (800, 600),  # DetectX special-case
     768: (1024,768),
     960: (1280,960),
+    1440: (1920,1440),
 }
 
 def video_dims(sz:int) -> tuple[int,int]:
@@ -67,7 +68,7 @@ def main():
     p.add_argument("--labels",      type=Path, required=True)
     p.add_argument("--model",       type=Path, required=True)
     p.add_argument("--out-json",    type=Path,
-                   default=Path("detectx/app/model/model.json"))
+                   default=Path("app/model/model.json"))
     p.add_argument("--objectness",  type=float, default=0.25)
     p.add_argument("--nms",         type=float, default=0.05)
     args = p.parse_args()
