@@ -75,15 +75,15 @@ python build_acap/extract_labels.py "$DATA_YAML" "$WORKDIR/labels.txt"
 # ---------- 3. inject model + labels --------------------------------
 mkdir -p "$APP_DIR/model" "$APP_DIR/label"
 cp "$MODEL_TFLITE"       "$APP_DIR/model/model.tflite"
-cp "$WORKDIR/labels.txt" "$APP_DIR/label/labels.txt"
+cp "$WORKDIR/labels.txt" "$APP_DIR/model/labels.txt"
 
 # ---------- 4. run prepare.py (json + params) -----------------------
 pushd "$WORKDIR" >/dev/null
 python prepare.py \
   --chip   "$CHIP" \
   --image-size    "$IMG_SIZE" \
-  --labels "$APP_DIR/label/labels.txt" \
-  --model  "$APP_DIR/model/model.tflite"
+  --labels "app/model/labels.txt" \
+  --model  "app/model/model.tflite"
 popd >/dev/null
 
 # ---------- 5. docker build -----------------------------------------
@@ -100,4 +100,4 @@ CID=$(docker create "$TAG")
 docker cp "$CID":/opt/app "$WORKDIR/build"
 docker rm "$CID" >/dev/null
 
-echo -e "\n✅ DetectX ACAP ready → $(ls -1 $WORKDIR/build/*.eap)\n"
+echo -e "\n✅ DetectX ACAP ready → $(ls -1 $WORKDIR/build/app/*.eap)\n"
