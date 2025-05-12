@@ -73,7 +73,7 @@ DATA_YAML_FP="$(realpath "yolov5/data/${DATA_YAML}")"
 # ---------- 3) Build ACAP -----------------------------------------
 case "${ACAP_TYPE}" in
   detectx)
-    scripts/build_acap_detectx.sh \
+    scripts/build_detectx_acap.sh \
         -m "${MODEL_TFLITE_FP}" \
         -y "${DATA_YAML_FP}" \
         -c "${CHIP}"
