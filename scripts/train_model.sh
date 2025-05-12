@@ -8,6 +8,7 @@ EPOCHS=300
 BATCH_SIZE=128
 DEVICE="mps"
 RUN_NAME="exp"
+IMG_SIZE=1440
 
 usage() {
 cat <<EOF
@@ -20,6 +21,7 @@ Options:
   -b, --batch-size N      Batch size (default: ${BATCH_SIZE})
   -n, --name NAME         Training run name (default: ${RUN_NAME})
   -D, --device DEV        Torch device string (default: ${DEVICE})
+  -s, --imgsz N           Image size (default: 1440)
   -h, --help              Show this help and exit
 EOF
 }
@@ -33,6 +35,7 @@ while [[ $# -gt 0 ]]; do
         -b|--batch-size)  BATCH_SIZE="$2"; shift 2 ;;
         -n|--name)        RUN_NAME="$2"; shift 2 ;;
         -D|--device)      DEVICE="$2"; shift 2 ;;
+        -s|--imgsz)       IMG_SIZE="$2"; shift 2 ;;
         -h|--help)        usage; exit 0 ;;
         *) echo "Unknown option $1"; usage; exit 1 ;;
     esac
@@ -47,6 +50,7 @@ pip install --upgrade torch torchvision torchaudio  # or mps/cu11
 
 # ---------- train ----------
 cd yolov5
+cp ../yolov5_scripts/train.py .
 python train.py \
       --name "${RUN_NAME}" \
       --data "${DATA_YAML}" \
@@ -54,4 +58,5 @@ python train.py \
       --weights '' \
       --cfg "models/${MODEL_CFG}" \
       --batch-size "${BATCH_SIZE}" \
-      --device "${DEVICE}"
+      --device "${DEVICE}" \
+      --imgsz "${IMG_SIZE}"

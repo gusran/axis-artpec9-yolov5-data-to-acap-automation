@@ -353,7 +353,7 @@ def train(hyp, opt, device, callbacks):
     maps = np.zeros(nc)  # mAP per class
     results = (0, 0, 0, 0, 0, 0, 0)  # P, R, mAP@.5, mAP@.5-.95, val_loss(box, obj, cls)
     scheduler.last_epoch = start_epoch - 1  # do not move
-    scaler = torch.cuda.amp.GradScaler(enabled=amp)
+    scaler = torch.amp.GradScaler(device.type,enabled=amp)
     stopper, stop = EarlyStopping(patience=opt.patience), False
     compute_loss = ComputeLoss(model)  # init loss class
     callbacks.run("on_train_start")
@@ -637,15 +637,6 @@ def main(opt, callbacks=Callbacks()):
         print_args(vars(opt))
         check_git_status()
         check_requirements(ROOT / "requirements.txt")
-
-    # Device selection
-    device = select_device(opt.device)
-
-    # ─── MPS-specific tweaks ──────────────────────────────────────────────
-    is_mps = device.type == "mps"
-    if is_mps:
-        os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
-        torch.set_float32_matmul_precision("high")
 
     # Resume (from specified or most recent last.pt)
     if opt.resume and not check_comet_resume(opt) and not opt.evolve:

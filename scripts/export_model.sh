@@ -4,6 +4,7 @@ set -euo pipefail
 # defaults
 DEVICE="mps"
 INCLUDE="tflite"
+IMG_SIZE=1440
 
 usage() {
 cat <<EOF
@@ -13,6 +14,7 @@ Options:
   -w, --weights FILE      Explicit .pt weights (default: auto-pick last run/best.pt)
   -D, --device DEV        Torch device (cpu, mps, 0…)  (default: ${DEVICE})
   -i, --include LIST      Formats to export (comma-separated, default: ${INCLUDE})
+  -s, --imgsz N           Image size (default: 1440)
   -h, --help              Show help
 EOF
 }
@@ -24,6 +26,7 @@ while [[ $# -gt 0 ]]; do
         -w|--weights) WEIGHTS="$2"; shift 2 ;;
         -D|--device)  DEVICE="$2";  shift 2 ;;
         -i|--include) INCLUDE="$2"; shift 2 ;;
+        -s|--imgsz)   IMG_SIZE="$2"; shift 2 ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown option $1"; usage; exit 1 ;;
     esac
@@ -47,4 +50,5 @@ python export.py \
     --weights "$BEST_PT" \
     --include "${INCLUDE}" \
     --int8 \
-    --device "${DEVICE}"
+    --device "${DEVICE}" \
+    --imgsz "${IMG_SIZE}"

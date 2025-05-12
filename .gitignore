@@ -2,3 +2,15 @@
 .venv_train
 .venv_export
 /yolov5/
+/build_acap/app/
+/datasets/
+/build_acap/model_params.h
+/build_acap/labels.txt
+/build_acap/best-int8.tflite
+/build_acap-detectx/_src/
+/build_acap-detectx/app/
+/build_acap-detectx/build/
+/build_acap-detectx/build.sh
+/build_acap-detectx/Dockerfile
+/build_acap-detectx/labels.txt
+/build_acap-detectx/prepare.py
