@@ -15,12 +15,13 @@ CHIP="artpec9"
 DEVICE="mps"
 ACAP_TYPE="detectx"          # detectx | axis (axis-yolov5-example)
 IMG_SIZE=1440
+WEIGHTS=''
 # ------------------------------------------------------------------
 
 usage() {
   cat <<EOF
 Usage: $0 [options]
-
+  --weights FILE     pre-trained weights (default: ${WEIGHTS})
   --data FILE        dataset YAML       (default: ${DATA_YAML})
   --model FILE       model  YAML        (default: ${MODEL_CFG})
   --epochs N         training epochs    (default: ${EPOCHS})
@@ -37,6 +38,7 @@ EOF
 # ---------- CLI parsing -------------------------------------------
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --weights) WEIGHTS="$2";   shift 2 ;;
     --data)    DATA_YAML="$2"; shift 2 ;;
     --model)   MODEL_CFG="$2"; shift 2 ;;
     --epochs)  EPOCHS="$2";    shift 2 ;;
@@ -52,6 +54,7 @@ done
 
 # ---------- 1) Train ----------------------------------------------
 scripts/train_model.sh \
+    -w "${WEIGHTS}" \
     -d "${DATA_YAML}" \
     -m "${MODEL_CFG}" \
     -e "${EPOCHS}" \

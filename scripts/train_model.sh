@@ -9,12 +9,14 @@ BATCH_SIZE=128
 DEVICE="mps"
 RUN_NAME="exp"
 IMG_SIZE=1440
+WEIGHTS=''
 
 usage() {
 cat <<EOF
 Usage: $0 [options]
 
 Options:
+  -w, --weights FILE      Initial weights (default: ${WEIGHTS})
   -d, --data FILE         Dataset yaml (default: ${DATA_YAML})
   -m, --model FILE        Model cfg yaml (default: ${MODEL_CFG})
   -e, --epochs N          Number of training epochs (default: ${EPOCHS})
@@ -29,6 +31,7 @@ EOF
 # ---------- getopt / getopts ----------
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        -w|--weights)     WEIGHTS="$2"; shift 2 ;;
         -d|--data)        DATA_YAML="$2"; shift 2 ;;
         -m|--model)       MODEL_CFG="$2"; shift 2 ;;
         -e|--epochs)      EPOCHS="$2"; shift 2 ;;
@@ -55,7 +58,7 @@ python train.py \
       --name "${RUN_NAME}" \
       --data "${DATA_YAML}" \
       --epochs "${EPOCHS}" \
-      --weights '' \
+      --weights "${WEIGHTS}" \
       --cfg "models/${MODEL_CFG}" \
       --batch-size "${BATCH_SIZE}" \
       --device "${DEVICE}" \

@@ -82,10 +82,9 @@ cp "$WORKDIR/labels.txt" "$APP_DIR/model/labels.txt"
 # ---------- 4. run prepare.py (json + params) -----------------------
 pushd "$WORKDIR" >/dev/null
 python prepare.py \
-  --chip   "$CHIP" \
-  --image-size    "$IMG_SIZE" \
-  --labels "app/model/labels.txt" \
-  --model  "app/model/model.tflite"
+  --chip "$CHIP" \
+  --image-size "$IMG_SIZE" \
+  --labels "app/model/labels.txt"
 popd >/dev/null
 
 # ---------- 5. docker build -----------------------------------------
